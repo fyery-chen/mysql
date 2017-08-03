@@ -1,0 +1,10 @@
+name: mysql 
+version: 1.0.0
+description: |
+  mysql
+home: https://www.mysql.com/ 
+sources:
+- https://github.com/mysql 
+maintainers:
+- name: Rancher Labs Support
+  email: support@rancher.com

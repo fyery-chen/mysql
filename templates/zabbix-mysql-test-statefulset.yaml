@@ -1,0 +1,52 @@
+{{- $root := . -}}
+{{- if $root.Values.MySql.Enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-mysql-test 
+  labels:
+    unit: mysql 
+    release: {{$root.Release.Name | quote }}
+    component: "{{$root.Release.Name}}-{{$root.Values.MySql.Name}}"
+spec:
+  clusterIP: None
+  ports:
+    - port: {{$root.Values.MySql.MysqlServerPort}}
+      targetPort: {{$root.Values.MySql.MysqlServerPort}}
+  selector:
+    component: "{{$root.Release.Name}}-{{$root.Values.MySql.Name}}"
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet 
+metadata:
+  name: {{$root.Release.Name}}-{{$root.Values.MySql.Name }}
+  labels:
+    unit: mysql 
+    release: {{$root.Release.Name | quote }}
+    component: "{{$root.Release.Name}}-{{$root.Values.MySql.Name}}"
+spec:
+  serviceName: {{$root.Release.Name}}-{{$root.Values.MySql.Name }}
+  replicas: 1 
+  selector:
+    matchLabels:
+      component: "{{$root.Release.Name}}-{{$root.Values.MySql.Name}}"
+  template:
+    metadata:
+      labels:
+        unit: mysql 
+        release: {{$root.Release.Name | quote }}
+        component: "{{$root.Release.Name}}-{{$root.Values.MySql.Name}}"
+    spec:
+      containers:
+      - name: {{$root.Release.Name}}-{{$root.Values.MySql.Name }}
+        image: "mysql:5.7" 
+        env:
+        - name: MYSQL_DATABASE 
+          value: {{$root.Values.MySql.MysqlDatabase | quote }}
+        - name: MYSQL_USER 
+          value: {{$root.Values.MySql.MysqlUser | quote }}
+        - name: MYSQL_PASSWORD 
+          value: {{$root.Values.MySql.MysqlPassword | quote }}
+        - name: MYSQL_ROOT_PASSWORD 
+          value: {{$root.Values.MySql.MysqlRootPassword | quote }}
+{{- end }}

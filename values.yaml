@@ -1,0 +1,14 @@
+# Mysql configuration
+# This DB configuration is just for Zabbix server and web UI, not for Zabbix proxy.
+# Because server and proxy can not use the same DB system. 
+MySql:
+  # Setting to true is just for test and if you want to use your own DB cluser,
+  # you should set it to false.
+  Enabled: true
+  Name: mysql
+  MysqlServerHost: "zabbix-mysql-test"
+  MysqlServerPort: 3306
+  MysqlDatabase: "zabbix"
+  MysqlUser: "zabbix"
+  MysqlPassword: "zabbix_pwd"
+  MysqlRootPassword: "root_pwd"
